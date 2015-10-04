@@ -1,4 +1,11 @@
-
+/**
+ * 書式付テキストボックス
+ * @classdesc テキストボックスに書式機能を追加する
+ * @constructor
+ * @memberof FormattingTextbox
+ * @param {string} targetId - 対象のinput要素
+ * @param {string} format - 書式フォーマット
+ */
 function FormattingTextbox(targetId,format){
   this.targetId = targetId;
   this.format = format;
@@ -7,10 +14,20 @@ function FormattingTextbox(targetId,format){
   this.init();
 };
 
+/**
+ * 入力結果を反映
+ * @method
+ * @name FormattingTextbox#displayText
+ */
 FormattingTextbox.prototype.displayText = function(){
   $(this.targetId).val(this.dataArray.toString().replace(/,/g,""));
 };
 
+/**
+ * 初期化処理
+ * @method
+ * @name FormattingTextbox#init
+ */
 FormattingTextbox.prototype.init = function(){
   var instance = this;
   instance.displayText();
