@@ -8,95 +8,11 @@
   <title>書式付きテキストボックス例</title>
 
   <script src="js/lib/jquery.min.js" charset="utf-8"></script>
+  <script src="js/formatting-textbox.js" charset="utf-8"></script>
 
   <script type="text/javascript">
     $(function(){
-      var targetId = "#target";
-      var format = "____-____";
-
-      var dataArray = format.split("");
-
-      function displayText(){
-        $(targetId).val(dataArray.toString().replace(/,/g,""));
-      }
-
-      displayText();
-
-      $(targetId).on("keydown",function(e){
-        var isBS = (e.keyCode === 8);
-        var isDel = (e.keyCode === 46);
-
-        var inputKeyCode = e.keyCode;
-        if(inputKeyCode>=96 && inputKeyCode<=105){
-          //テンキー対応
-          inputKeyCode = (inputKeyCode-96+48);
-        }
-        var inputValue = String.fromCharCode(inputKeyCode);
-        if(isBS || isDel || inputValue.match(new RegExp(/\d/g))){
-          var startPos = $(this)[0].selectionStart;
-          if(isBS===false && startPos >= format.length){
-            return;
-          }
-
-          //置き換え位置の設定と値の設定
-          if(isBS || isDel){
-            if(isBS){
-              //カーソルの移動
-              startPos--;
-              if(startPos<0){
-                startPos=0;
-              }
-              if(dataArray[startPos] === "-"){
-                startPos--;
-              }
-
-              //置き換え
-              dataArray[startPos] = "_";
-            }
-            if(isDel){
-              var index = startPos;
-              while(index < format.length-1){
-                if(dataArray[index] !== "-"){
-                  if(dataArray[index+1] === "-"){
-                    dataArray[index] = dataArray[index+2];
-                  }else{
-                    dataArray[index] = dataArray[index+1];
-                  }
-                }
-                index++;
-              }
-              dataArray[index] = "_";
-            }
-          }else{
-            //置き換え
-            if(dataArray[startPos] === "-"){
-              startPos++;
-            }
-            dataArray[startPos] = inputValue;
-
-            //カーソルの移動
-            if(startPos < format.length){
-              startPos++;
-            }
-          }
-
-          //表示
-          displayText();
-
-          //カーソル位置を設定
-          $(this)[0].selectionStart = $(this)[0].selectionEnd = startPos;
-        }
-        if(e.keyCode!==37 && e.keyCode!==39){
-          e.preventDefault();
-        }
-      });
-
-      $(targetId).on("keypress",function(e){
-        e.preventDefault();
-      });
-      $(targetId).on("keyup",function(e){
-        e.preventDefault();
-      });
+      var formattingTextbox = new FormattingTextbox("#target","____-____");
     });
   </script>
 </head>
