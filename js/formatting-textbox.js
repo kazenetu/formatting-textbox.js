@@ -78,6 +78,25 @@ FormattingTextbox.prototype.init = function(){
           instance.dataArray[index] = "_";
         }
       }else{
+        //最終桁に入力があれば終了
+        var index = instance.format.length-1;
+        if(instance.dataArray[index] !== "_"){
+          return;
+        }
+
+        //字送りを行う
+        while(startPos < index){
+          if(instance.dataArray[index] !== "-"){
+            if(instance.dataArray[index-1] === "-"){
+              instance.dataArray[index] = instance.dataArray[index-2];
+            }else{
+              instance.dataArray[index] = instance.dataArray[index-1];
+            }
+          }
+
+          index--;
+        }
+
         //置き換え
         if(instance.dataArray[startPos] === "-"){
           startPos++;
