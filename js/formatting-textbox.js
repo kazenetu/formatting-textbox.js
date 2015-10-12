@@ -11,7 +11,30 @@ function FormattingTextbox(targetId,format){
   this.format = format;
   this.dataArray  = this.format.split("");
 
+  this.inputRegExp = new RegExp(/\d/);
+  this.delimiterRegExp = new RegExp(/[-]/);
+
   this.init();
+};
+
+/**
+ * 入力許可パターンを設定
+ * @method
+ * @name FormattingTextbox#SetInputRegExp
+ * @param {string} patern - 正規表現で表現した文字（例："[0-9]"）
+ */
+FormattingTextbox.prototype.SetInputRegExp = function(patern){
+  this.inputRegExp = new RegExp(patern);
+};
+
+/**
+ * 区切り文字パターンを設定
+ * @method
+ * @name FormattingTextbox#SetDelimiterRegExp
+ * @param {string} patern - 正規表現で表現した文字（例："[-]"）
+ */
+FormattingTextbox.prototype.SetDelimiterRegExp = function(patern){
+  this.delimiterRegExp = new RegExp(patern);
 };
 
 /**
@@ -42,7 +65,7 @@ FormattingTextbox.prototype.init = function(){
       inputKeyCode = (inputKeyCode-96+48);
     }
     var inputValue = String.fromCharCode(inputKeyCode);
-    if(isBS || isDel || inputValue.match(new RegExp(/\d/g))){
+    if(isBS || isDel || instance.inputRegExp.test(inputValue)){
       var startPos = $(this)[0].selectionStart;
       if(isBS===false && startPos >= instance.format.length){
         return;
@@ -56,7 +79,7 @@ FormattingTextbox.prototype.init = function(){
           if(startPos<0){
             startPos=0;
           }
-          if(instance.dataArray[startPos] === "-"){
+          if(instance.delimiterRegExp.test(instance.dataArray[startPos])){
             startPos--;
           }
 
@@ -66,8 +89,8 @@ FormattingTextbox.prototype.init = function(){
         if(isDel){
           var index = startPos;
           while(index < instance.format.length-1){
-            if(instance.dataArray[index] !== "-"){
-              if(instance.dataArray[index+1] === "-"){
+            if(instance.delimiterRegExp.test(instance.dataArray[index]) === false){
+              if(instance.delimiterRegExp.test(instance.dataArray[index+1])){
                 instance.dataArray[index] = instance.dataArray[index+2];
               }else{
                 instance.dataArray[index] = instance.dataArray[index+1];
@@ -78,8 +101,27 @@ FormattingTextbox.prototype.init = function(){
           instance.dataArray[index] = "_";
         }
       }else{
+        //最終桁に入力があれば終了
+        var index = instance.format.length-1;
+        if(instance.dataArray[index] !== "_"){
+          return;
+        }
+
+        //字送りを行う
+        while(startPos < index){
+          if(instance.delimiterRegExp.test(instance.dataArray[index])==false){
+            if(instance.delimiterRegExp.test(instance.dataArray[index-1])){
+              instance.dataArray[index] = instance.dataArray[index-2];
+            }else{
+              instance.dataArray[index] = instance.dataArray[index-1];
+            }
+          }
+
+          index--;
+        }
+
         //置き換え
-        if(instance.dataArray[startPos] === "-"){
+        if(instance.delimiterRegExp.test(instance.dataArray[startPos])){
           startPos++;
         }
         instance.dataArray[startPos] = inputValue;

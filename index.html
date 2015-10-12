@@ -12,8 +12,17 @@
 
   <script type="text/javascript">
     $(function(){
+      //スタンダードな実装
       var formattingTextbox = new FormattingTextbox("#target","____-____");
-      var formattingTextbox2 = new FormattingTextbox("#target2","_-____");
+
+      //区切り文字を-または+に設定
+      var formattingTextbox2 = new FormattingTextbox("#target2","_+__-__");
+      formattingTextbox2.SetDelimiterRegExp("[-]|[+]");
+
+      //区切り文字を-または+に設定、入力可能文字にアルファベットを追加
+      var formattingTextbox3 = new FormattingTextbox("#target3","__+__*__");
+      formattingTextbox3.SetDelimiterRegExp("[*]|[+]");
+      formattingTextbox3.SetInputRegExp("[0-9]|[A-Z]");
     });
   </script>
 </head>
@@ -21,6 +30,7 @@
 
 <input type="text" id="target" style="ime-mode: disabled;" />
 <input type="text" id="target2" style="ime-mode: disabled;" />
+<input type="text" id="target3" style="ime-mode: disabled;" />
 
 </body>
 </html>
