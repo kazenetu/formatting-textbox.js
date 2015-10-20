@@ -1,0 +1,12 @@
+{
+	"name": "formatting-textbox",
+	"version": "0.9.0",
+	"description": "formatting-textbox",
+	"author": "kazenetu",
+	"url": "https://github.com/kazenetu/formatting-textbox.js",
+	"license": "MIT License",
+	"devDependencies":{
+		"gulp": "*",
+		"gulp-jsdoc": "*"
+	}
+}
