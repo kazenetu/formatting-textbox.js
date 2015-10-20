@@ -13,24 +13,43 @@
   <script type="text/javascript">
     $(function(){
       //スタンダードな実装
-      var formattingTextbox = new FormattingTextbox("#target","____-____");
+      $("#target").FormattingTextbox("____-____");
 
       //区切り文字を-または+に設定
-      var formattingTextbox2 = new FormattingTextbox("#target2","_+__-__");
-      formattingTextbox2.SetDelimiterRegExp("[-]|[+]");
+      $("#target2").FormattingTextbox("_+__-__",{
+        delimiterRegExp:/[-]|[+]/
+      });
 
       //区切り文字を-または+に設定、入力可能文字にアルファベットを追加
-      var formattingTextbox3 = new FormattingTextbox("#target3","__+__*__");
-      formattingTextbox3.SetDelimiterRegExp("[*]|[+]");
-      formattingTextbox3.SetInputRegExp("[0-9]|[A-Z]");
+      $("#target3").FormattingTextbox("__+__*__",{
+        inputRegExp:/[0-9]|[A-Z]/
+        ,delimiterRegExp:/[*]|[+]/
+      });
     });
   </script>
+
+  <style media="screen">
+  input::-ms-clear {
+    visibility:hidden
+  }
+  </style>
 </head>
 <body>
 
-<input type="text" id="target" style="ime-mode: disabled;" />
-<input type="text" id="target2" style="ime-mode: disabled;" />
-<input type="text" id="target3" style="ime-mode: disabled;" />
+<div style="margin-bottom:1em;">
+  <div>スタンダードな実装</div>
+  <input type="text" id="target" style="ime-mode: disabled;" />
+</div>
+
+<div style="margin-bottom:1em;">
+  <div>区切り文字を-または+に設定</div>
+  <input type="text" id="target2" style="ime-mode: disabled;" />
+</div>
+
+<div style="margin-bottom:1em;">
+  <div>区切り文字を-または+に設定、入力可能文字にアルファベットを追加</div>
+  <input type="text" id="target3" style="ime-mode: disabled;" />
+</div>
 
 </body>
 </html>

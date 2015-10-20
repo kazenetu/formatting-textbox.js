@@ -1,57 +1,59 @@
 /**
+ * @file 書式付テキストボックスクラスを記述するファイル
+ *
+ * @author kazenetu
+ * @version 0.9.0
+ * @license MIT
+ */
+
+/**
  * 書式付テキストボックス
  * @classdesc テキストボックスに書式機能を追加する
  * @constructor
- * @memberof FormattingTextbox
- * @param {string} targetId - 対象のinput要素
- * @param {string} format - 書式フォーマット
  */
-function FormattingTextbox(targetId,format){
+//var  FormattingTextbox=
+(function($){
+  /**
+   * コンストラクタ
+   * @method
+   * @name FormattingTextbox#FormattingTextbox
+   * @param {string} patern - 正規表現で表現した文字（例："[0-9]"）
+   */
+$.fn.FormattingTextbox = function(format,option){
+  var  FormattingTextbox= function(targetId,format,option){
   this.targetId = targetId;
   this.format = format;
   this.dataArray  = this.format.split("");
 
-  this.inputRegExp = new RegExp(/\d/);
-  this.delimiterRegExp = new RegExp(/[-]/);
+  var defaults = {
+    inputRegExp:/\d/
+    ,delimiterRegExp:/[-]/
+  };
+  var option = $.extend(defaults,option);
+  this.inputRegExp = option.inputRegExp;
+  this.delimiterRegExp = option.delimiterRegExp;
 
-  this.init();
 };
 
-/**
- * 入力許可パターンを設定
- * @method
- * @name FormattingTextbox#SetInputRegExp
- * @param {string} patern - 正規表現で表現した文字（例："[0-9]"）
- */
-FormattingTextbox.prototype.SetInputRegExp = function(patern){
-  this.inputRegExp = new RegExp(patern);
-};
-
-/**
- * 区切り文字パターンを設定
- * @method
- * @name FormattingTextbox#SetDelimiterRegExp
- * @param {string} patern - 正規表現で表現した文字（例："[-]"）
- */
-FormattingTextbox.prototype.SetDelimiterRegExp = function(patern){
-  this.delimiterRegExp = new RegExp(patern);
-};
+  var p=FormattingTextbox.prototype;
 
 /**
  * 入力結果を反映
  * @method
+ * @inner
  * @name FormattingTextbox#displayText
  */
-FormattingTextbox.prototype.displayText = function(){
+p.displayText = function(){
   $(this.targetId).val(this.dataArray.toString().replace(/,/g,""));
 };
 
 /**
  * 初期化処理
  * @method
+ * @inner
  * @name FormattingTextbox#init
  */
-FormattingTextbox.prototype.init = function(){
+p.init = function(){
   var instance = this;
   instance.displayText();
 
@@ -150,3 +152,9 @@ FormattingTextbox.prototype.init = function(){
     e.preventDefault();
   });
 };
+this.FormattingTextbox = new FormattingTextbox(this.selector,format,option);
+this.FormattingTextbox.init();
+
+return (this);
+};
+})(jQuery);
