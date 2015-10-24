@@ -60,6 +60,7 @@ p.init = function(){
   var instance = this;
   instance.displayText();
 
+  //キーダウンイベント
   $(instance.targetId).on("keydown",function(e){
     var isBS = (e.keyCode === 8);
     var isDel = (e.keyCode === 46);
@@ -143,14 +144,36 @@ p.init = function(){
       //カーソル位置を設定
       $(this)[0].selectionStart = $(this)[0].selectionEnd = startPos;
     }
-    if(e.keyCode!==37 && e.keyCode!==39){
+    if(e.keyCode!==37 && e.keyCode!==39 && e.keyCode!==9){
       e.preventDefault();
     }
   });
 
+  //フォーカスイベント
+  $(instance.targetId).on("focus",function(e){
+    var targetInstance = $(instance.targetId)[0];
+    if(targetInstance.selectionStart === 0
+        && targetInstance.selectionStart === targetInstance.selectionEnd){
+          //chrome対応：範囲選択メソッドを呼ばないとselectイベントが発火しない
+          targetInstance.setSelectionRange(targetInstance.selectionStart, 0);
+    }
+  });
+
+  //選択イベント
+  $(instance.targetId).on("select",function(e){
+    var targetInstance = $(instance.targetId)[0];
+    if(targetInstance.selectionStart !== targetInstance.selectionEnd){
+      //開始と終了の位置が異なる場合は開始位置に合わせる
+      targetInstance.selectionEnd = targetInstance.selectionStart;
+    }
+  });
+
+  //キープレスイベント
   $(instance.targetId).on("keypress",function(e){
     e.preventDefault();
   });
+
+  //キーアップイベント
   $(instance.targetId).on("keyup",function(e){
     e.preventDefault();
   });
