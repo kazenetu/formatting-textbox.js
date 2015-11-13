@@ -23,7 +23,7 @@ $("#target2").FormattingTextbox("_+__-__",{
 
 //区切り文字を-または+に設定、入力可能文字にアルファベットを追加
 $("#target3").FormattingTextbox("__+__*__",{
-  inputRegExp:/[0-9]|[A-Z]/
+  inputRegExp:/[0-9]|[A-Za-z]/
   ,delimiterRegExp:/[*]|[+]/
 });
 ```
