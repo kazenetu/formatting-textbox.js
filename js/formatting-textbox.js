@@ -2,7 +2,7 @@
  * @file 書式付テキストボックスクラスを記述するファイル
  *
  * @author kazenetu
- * @version 0.9.0
+ * @version 1.0.0
  * @license MIT license.
  */
 
@@ -68,6 +68,11 @@ p.init = function(){
     if(inputKeyCode>=96 && inputKeyCode<=105){
       //テンキー対応
       inputKeyCode = (inputKeyCode-96+48);
+    }else{
+      //アルファベット+シフトキー対応
+      if(inputKeyCode>=65 && inputKeyCode<=90 && e.shiftKey===false){
+        inputKeyCode += 32;
+      }
     }
     var inputValue = String.fromCharCode(inputKeyCode);
     if(isBS || isDel || instance.inputRegExp.test(inputValue)){
