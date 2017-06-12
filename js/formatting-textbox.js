@@ -2,7 +2,7 @@
  * @file 書式付テキストボックスクラスを記述するファイル
  *
  * @author kazenetu
- * @version 0.9.1
+ * @version 1.0.1
  * @license MIT license.
  */
 
@@ -60,6 +60,7 @@ p.init = function(){
   var instance = this;
   instance.displayText();
 
+  //キーダウンイベント
   $(instance.targetId).on("keydown",function(e){
     if(e.keyCode === 35 || e.keyCode === 36 || e.keyCode === 9){
       return;
@@ -71,6 +72,11 @@ p.init = function(){
     if(inputKeyCode>=96 && inputKeyCode<=105){
       //テンキー対応
       inputKeyCode = (inputKeyCode-96+48);
+    }else{
+      //アルファベット+シフトキー対応
+      if(inputKeyCode>=65 && inputKeyCode<=90 && e.shiftKey===false){
+        inputKeyCode += 32;
+      }
     }
     var inputValue = String.fromCharCode(inputKeyCode);
     if(isBS || isDel || instance.inputRegExp.test(inputValue)){
@@ -157,14 +163,36 @@ p.init = function(){
       //カーソル位置を設定
       $(this)[0].selectionStart = $(this)[0].selectionEnd = startPos;
     }
-    if(e.keyCode!==37 && e.keyCode!==39){
+    if(e.keyCode!==37 && e.keyCode!==39 && e.keyCode!==9){
       e.preventDefault();
     }
   });
 
+  //フォーカスイベント
+  $(instance.targetId).on("focus",function(e){
+    var targetInstance = $(instance.targetId)[0];
+    if(targetInstance.selectionStart === 0
+        && targetInstance.selectionStart === targetInstance.selectionEnd){
+          //chrome対応：範囲選択メソッドを呼ばないとselectイベントが発火しない
+          targetInstance.setSelectionRange(targetInstance.selectionStart, 0);
+    }
+  });
+
+  //選択イベント
+  $(instance.targetId).on("select",function(e){
+    var targetInstance = $(instance.targetId)[0];
+    if(targetInstance.selectionStart !== targetInstance.selectionEnd){
+      //開始と終了の位置が異なる場合は開始位置に合わせる
+      targetInstance.selectionEnd = targetInstance.selectionStart;
+    }
+  });
+
+  //キープレスイベント
   $(instance.targetId).on("keypress",function(e){
     e.preventDefault();
   });
+
+  //キーアップイベント
   $(instance.targetId).on("keyup",function(e){
     e.preventDefault();
   });
