@@ -25,6 +25,12 @@
         inputRegExp:/[0-9]|[A-Za-z]/
         ,delimiterRegExp:/[*]|[+]/
       });
+
+      //データ設定例
+      $("#dataset").on("click",function(e){
+        $("#target").trigger("datachange",["1234-5678"]);
+
+      });
     });
   </script>
 
@@ -49,6 +55,10 @@
 <div style="margin-bottom:1em;">
   <div>区切り文字を-または+に設定、入力可能文字にアルファベットを追加</div>
   <input type="text" id="target3" style="ime-mode: disabled;" />
+</div>
+
+<div>
+  <button id="dataset">データ設定</button>
 </div>
 
 </body>
