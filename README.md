@@ -28,5 +28,15 @@ $("#target3").FormattingTextbox("__+__*__",{
 });
 ```
 
+#### __$(_セレクタ_).trigger("datachange",[設定値])__  
+FormattingTextboxを設定したinputタグに対して値を設定します。  
+カスタムイベント「datachange」に設定値を渡します。
+
+```javascript
+//実装例
+//スタンダードな実装(#target) に1234-5678を設定する
+ $("#target").trigger("datachange",["1234-5678"]);
+```
+
 ## License
 MIT license.
